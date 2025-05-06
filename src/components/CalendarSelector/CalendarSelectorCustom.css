@@ -1,0 +1,19 @@
+.react-datepicker__today-button {
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+    row-gap: 0.5rem;
+    cursor: pointer;
+    flex-direction: row;
+    text-align: center;
+    padding: 0.25rem;
+  }
+  
+  .react-datepicker__today-button::before {
+    content: "\\f015";
+    font-family: 'Font Awesome 5 Free', sans-serif;
+    font-weight: 900;
+    margin-inline-end: 6px;
+    display: inline-block;
+  }
+  

@@ -1,0 +1,96 @@
+h2 {
+  color: #444;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.container {
+  width: 100%;
+}
+
+form {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  margin: 8px 0 5px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #333;
+}
+
+input[type="text"],
+button {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+fieldset {
+  border: none;
+  padding: 18px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+legend {
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 0 12px;
+  color: #555;
+  border-bottom: 2px solid #ccc;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  font-weight: 700;
+  border: none;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.calendar-selector-wrapper {
+  margin-bottom: 20px;
+}
+
+.calendar-selector-wrapper input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.calendar-selector-wrapper input:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
