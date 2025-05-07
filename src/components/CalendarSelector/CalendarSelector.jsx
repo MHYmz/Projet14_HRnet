@@ -9,7 +9,7 @@ export default function CalendarSelector({ selectedDay, onSelectDay }) {
     < DatePicker
     selected={selectedDay}
     onChange={onSelectDay}
-    dateFormat="MM/dd/yyyy"
+    dateFormat="dd/MM/yyyy"
     showMonthDropdown
     showYearDropdown
     dropdownMode='select'

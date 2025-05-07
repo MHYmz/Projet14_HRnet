@@ -1,10 +1,15 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link} from "react-router-dom";
+import { registerEmployeeAction } from "../../interactions/staffActions";
 import CalendarSelector from "../../components/CalendarSelector/CalendarSelector";
 import OptionSelector from "../../components/OptionSelector/OptionSelector"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faHome} from "@fortawesome/free-solid-svg-icons";
 import { regionList, divisionOptions} from "../../data/values"
 import "./NewEmployeeCustom.css"
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
 
 
 
@@ -17,12 +22,69 @@ export default function CreateEmployee() {
   const [city, setCity] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [region, setRegion] = useState("");
-  const [division, setDivsion] = useState("");
+  const [division, setDivision] = useState("");
+
+  const dispatch = useDispatch();
+
+const resetForm = () => {
+  setFirstName("");
+  setLastName("");
+  setDateOfBirth(null);
+  setStartDate(null);
+  setStreet("");
+  setCity("");
+  setRegion("");
+  setZipCode("");
+  setDivision("");
+}
+
+const registerEmployee = (e) => {
+  e.preventDefault();
+  
+  if (
+    !firstName.trim() ||
+    !lastName.trim() ||
+    !dateOfBirth ||
+    !startDate ||
+    !street.trim() ||
+    !city.trim() ||
+    !region ||
+    !zipCode.trim() ||
+    !division
+  ) {
+    toast.error("Please fill all fields");
+    return;
+  }
+
+  const newEmployee = {
+    firstName,
+    lastName,
+    dateOfBirth: dateOfBirth.toISOString(),
+    startDate: startDate.toISOString(),
+    address: {
+      street,
+      city,
+      state: region,
+      zipCode,
+    },
+    department: division,
+  };
+
+  console.log("Employé à enregistrer :", newEmployee);
+
+  dispatch(registerEmployeeAction(newEmployee));
+
+  toast.success("Employee Created Successfully!");
+  resetForm();
+};
+
 
   return (
     <div className="container">
       <h2>Create Employee</h2>
-      <form>
+      <Link to="/employees">See Active Employees</Link>
+      <form onSubmit={registerEmployee}>
+
         <label>First Name:</label>
         <input
           type="text"
@@ -70,7 +132,7 @@ export default function CreateEmployee() {
           <label>State:</label>
           <OptionSelector 
               optionsList={regionList.map((s) => ({
-                value: s.abreviation,
+                value: s.abbreviation,
                 label: s.name,
               }))}
               selectedValue={region}
@@ -87,9 +149,9 @@ export default function CreateEmployee() {
 
         <label>Department:</label>
         <OptionSelector
-          optionList={divisionOptions}
+          optionsList={divisionOptions}
           selectedValue={division}
-          onChange={setDivsion}
+          onChange={(value) => setDivision(value)}
           />
 
         <button type="submit">Save</button>
