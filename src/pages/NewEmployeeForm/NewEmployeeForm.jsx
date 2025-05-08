@@ -10,6 +10,7 @@ import { regionList, divisionOptions} from "../../data/values"
 import "./NewEmployeeCustom.css"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
+import Logo from "../../components/Logo/Logo"
 
 
 
@@ -70,8 +71,6 @@ const registerEmployee = (e) => {
     department: division,
   };
 
-  console.log("Employé à enregistrer :", newEmployee);
-
   dispatch(registerEmployeeAction(newEmployee));
 
   toast.success("Employee Created Successfully!");
@@ -80,9 +79,15 @@ const registerEmployee = (e) => {
 
 
   return (
+    <div>
+      <Link to="/">
+      <Logo/>
+      </Link>
+
     <div className="container">
       <h2>Create Employee</h2>
-      <Link to="/employees">See Active Employees</Link>
+      <Link to="/employees" className="see-active-employees">
+      See Active Employees</Link>
       <form onSubmit={registerEmployee}>
 
         <label>First Name:</label>
@@ -156,6 +161,8 @@ const registerEmployee = (e) => {
 
         <button type="submit">Save</button>
       </form>
+    </div>
+    <ToastContainer/>
     </div>
   );
 }

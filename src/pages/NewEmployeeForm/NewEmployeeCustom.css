@@ -61,7 +61,7 @@ legend {
 }
 
 button {
-  background-color: #007bff;
+  background-color: #4C9A2A;
   color: white;
   font-weight: 700;
   border: none;
@@ -73,7 +73,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #07be97;
 }
 
 .calendar-selector-wrapper {
@@ -90,7 +90,33 @@ button:hover {
 }
 
 .calendar-selector-wrapper input:focus {
-  border-color: #007bff;
+  border-color: #4C9A2A;
   outline: none;
   box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+}
+
+.see-active-employees {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #4C9A2A;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+
+.see-active-employees:hover {
+  background-color: #07be97;
+}
+
+.see-active-employees:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
