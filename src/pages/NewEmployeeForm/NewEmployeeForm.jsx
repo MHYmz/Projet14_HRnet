@@ -165,9 +165,10 @@ const registerEmployee = (e) => {
           />
           </div>
           </div>
-          
-        <div className="save-button-container">
+
+        <div className="button-container">
         <button type="submit" className="save-button">Save</button>
+        <button type="button" onClick={resetForm} className="cancel-button">Cancel</button>
         </div>
       </form>
     </div>
