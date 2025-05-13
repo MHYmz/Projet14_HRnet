@@ -120,3 +120,52 @@ button:hover {
   background-color: #cccccc;
   cursor: not-allowed;
 }
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.form-sections {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: nowrap; 
+}
+
+.form-section {
+  flex: 1;
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
+  min-width: 48%; 
+}
+
+.save-button-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.save-button {
+  background-color: #4C9A2A;
+  color: white;
+  font-weight: 700;
+  border: none;
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 1rem;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+  max-width: 200px;
+}
+
+.save-button:hover {
+  background-color: #07be97;
+}

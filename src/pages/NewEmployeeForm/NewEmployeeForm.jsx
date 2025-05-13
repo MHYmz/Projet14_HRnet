@@ -88,8 +88,10 @@ const registerEmployee = (e) => {
       <h2>Create Employee</h2>
       <Link to="/employees" className="see-active-employees">
       See Active Employees</Link>
-      <form onSubmit={registerEmployee}>
 
+      <form onSubmit={registerEmployee} className="form-container">
+        <div className="form-sections">
+        <div className="form-section">
         <label>First Name:</label>
         <input
           type="text"
@@ -117,6 +119,9 @@ const registerEmployee = (e) => {
           onSelectDay={setStartDate}
           todayButton={<FontAwesomeIcon icon={faHome} />}
         />
+        </div>
+
+        <div className="form-section">
 
         <fieldset>
           <legend>Address</legend>
@@ -158,8 +163,12 @@ const registerEmployee = (e) => {
           selectedValue={division}
           onChange={(value) => setDivision(value)}
           />
-
-        <button type="submit">Save</button>
+          </div>
+          </div>
+          
+        <div className="save-button-container">
+        <button type="submit" className="save-button">Save</button>
+        </div>
       </form>
     </div>
     <ToastContainer/>
