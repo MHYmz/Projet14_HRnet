@@ -10,7 +10,7 @@ import { regionList, divisionOptions} from "../../data/values"
 import "./NewEmployeeCustom.css"
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
-import Logo from "../../components/Logo/Logo"
+import Header from "../../components/Header/Header"
 
 
 
@@ -80,9 +80,7 @@ const registerEmployee = (e) => {
 
   return (
     <div>
-      <Link to="/">
-      <Logo/>
-      </Link>
+      <Header />
 
     <div className="container">
       <h2>Create Employee</h2>
@@ -92,6 +90,8 @@ const registerEmployee = (e) => {
       <form onSubmit={registerEmployee} className="form-container">
         <div className="form-sections">
         <div className="form-section">
+          <fieldset>
+            <legend>PERSONAL INFORMATION</legend>
         <label>First Name:</label>
         <input
           type="text"
@@ -119,12 +119,14 @@ const registerEmployee = (e) => {
           onSelectDay={setStartDate}
           todayButton={<FontAwesomeIcon icon={faHome} />}
         />
+        </fieldset>
         </div>
+
 
         <div className="form-section">
 
         <fieldset>
-          <legend>Address</legend>
+          <legend>ADRESS</legend>
           <label>Street:</label>
           <input
             type="text"

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useReactTable, getCoreRowModel, getFilteredRowModel } from '@tanstack/react-table';
 import EmployeeTable from '../../components/EmployeeTable/EmployeeTable';
 import "./EmployeeDirectoryCustom.css"
-import Logo from "../../components/Logo/Logo"
+import Header from '../../components/Header/Header';
 
 export default function EmployeeDirectory() {
     const staffMembers = useSelector((state) => state.staffData.staffList) || [];
@@ -56,9 +56,7 @@ export default function EmployeeDirectory() {
     
     return (
        <div>
-       <Link to="/">
-        <Logo/>
-        </Link>
+       < Header />
             <h2>Employee Directory</h2>
             <div className="header">
                 <div className="entries-select">

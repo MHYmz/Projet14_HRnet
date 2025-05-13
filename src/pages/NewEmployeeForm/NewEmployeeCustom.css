@@ -47,7 +47,6 @@ input[type="text"]:focus {
 fieldset {
   border: none;
   padding: 18px;
-  background-color: #f9f9f9;
   border-radius: 6px;
   margin-bottom: 15px;
 }
@@ -56,8 +55,9 @@ legend {
   font-weight: 600;
   font-size: 1.1rem;
   padding: 0 12px;
-  color: #555;
-  border-bottom: 2px solid #ccc;
+  color: #000000;
+  border-bottom: none;
+  text-align: center;
 }
 
 button {
@@ -127,7 +127,7 @@ button:hover {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
-  background-color: #fff;
+  background-color: transparent;
   border-radius: 8px;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
 }
@@ -140,12 +140,10 @@ button:hover {
 }
 
 .form-section {
-  flex: 1;
-  background-color: #ffffff;
-  padding: 15px;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 20px;
   box-shadow: 0 10px 15px rgba(0, 0, 0, 0.05);
-  min-width: 48%; 
+  width: 48%;
 
 }
 
