@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link} from "react-router-dom";
 import { registerEmployeeAction } from "../../interactions/staffActions";
-import CalendarSelector from "../../components/CalendarSelector/CalendarSelector";
-import OptionSelector from "../../components/OptionSelector/OptionSelector"
+import CalendarSelector from "hrnet-calendar-selector";
+import OptionSelector from "hrnet-option-selector"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faHome} from "@fortawesome/free-solid-svg-icons";
 import { regionList, divisionOptions} from "../../data/values"
