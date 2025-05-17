@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link} from "react-router-dom";
 import { registerEmployeeAction } from "../../interactions/staffActions";
@@ -17,6 +17,12 @@ import Header from "../../components/Header/Header"
 export default function CreateEmployee() {
   const dispatch = useDispatch();
 
+const [employees, setEmployees] = useState(() => {
+  const storedEmployees = localStorage.getItem("employees");
+  return storedEmployees ? JSON.parse(storedEmployees) : [];
+});
+
+
   const [formData, setFormData] = useState({
   firstName: "",
   lastName: "",
@@ -28,6 +34,10 @@ export default function CreateEmployee() {
   region:"",
   division:"",
 });
+
+useEffect(() => {
+  localStorage.setItem("employees", JSON.stringify(employees));
+}, [employees]);
 
 const handleChange = useCallback ((e) => {
   const { name, value } = e.target;
@@ -63,6 +73,7 @@ const registerEmployee = useCallback(
 
   const newEmployee = {
     ...formData,
+    id: Date.now(),
     dateOfBirth: formData.dateOfBirth.toISOString(),
     startDate: formData.startDate.toISOString(),
     address: {
@@ -74,12 +85,15 @@ const registerEmployee = useCallback(
     department: formData.division,
   };
 
-  dispatch(registerEmployeeAction(newEmployee));
 
+const updatedEmployees = [...employees, newEmployee];
+setEmployees(updatedEmployees);
+
+  dispatch(registerEmployeeAction(newEmployee));
   toast.success("Employee Created Successfully!");
   resetForm();
 },
-[dispatch, formData, resetForm]
+[dispatch, formData, resetForm, employees]
 );
 
   return (
