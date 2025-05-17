@@ -3,9 +3,11 @@ import { flexRender } from '@tanstack/react-table';
 import "./EmployeeTableCustom.css";
 
 export default function EmployeeTable({ table }) {
+    
     const formatDateToISO = (inputDate) => {
+        if (!inputDate) return 'N/A';
         const parsedDate = new Date(inputDate);
-        return parsedDate.toLocaleDateString("fr-CA");
+        return isNaN(parsedDate) ? 'Invalid Date' : parsedDate.toLocaleDateString("fr-CA");
     };
 
     return (
@@ -25,7 +27,7 @@ export default function EmployeeTable({ table }) {
                                         <span className="sorting-icon">
                                             {column.column.getIsSorted() === 'asc' ? '▲' : ''}
                                             {column.column.getIsSorted() === 'desc' ? '▼' : ''}
-                                            {column.column.getIsSorted() === false ? '•' : ''}
+                                            
                                         </span>
                                     )}
                                 </th>
