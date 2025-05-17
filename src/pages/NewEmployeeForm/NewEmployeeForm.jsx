@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link} from "react-router-dom";
 import { registerEmployeeAction } from "../../interactions/staffActions";
@@ -15,68 +15,72 @@ import Header from "../../components/Header/Header"
 
 
 export default function CreateEmployee() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState(null);
-  const [startDate, setStartDate] = useState(null);
-  const [street, setStreet] = useState("");
-  const [city, setCity] = useState("");
-  const [zipCode, setZipCode] = useState("");
-  const [region, setRegion] = useState("");
-  const [division, setDivision] = useState("");
-
   const dispatch = useDispatch();
 
-const resetForm = () => {
-  setFirstName("");
-  setLastName("");
-  setDateOfBirth(null);
-  setStartDate(null);
-  setStreet("");
-  setCity("");
-  setRegion("");
-  setZipCode("");
-  setDivision("");
-}
+  const [formData, setFormData] = useState({
+  firstName: "",
+  lastName: "",
+  dateOfBirth: null,
+  startDate: null,
+  street: "",
+  city:"",
+  zipCode:"",
+  region:"",
+  division:"",
+});
 
-const registerEmployee = (e) => {
-  e.preventDefault();
+const handleChange = useCallback ((e) => {
+  const { name, value } = e.target;
+  setFormData((prev) => ({ ...prev, [name]: value}));
+}, []);  
   
-  if (
-    !firstName.trim() ||
-    !lastName.trim() ||
-    !dateOfBirth ||
-    !startDate ||
-    !street.trim() ||
-    !city.trim() ||
-    !region ||
-    !zipCode.trim() ||
-    !division
-  ) {
+const handleDateChange = useCallback ((name, date) => {
+  setFormData((prev) => ({ ...prev, [name]: date }));
+}, []);
+
+const resetForm = useCallback (() => {
+  setFormData({
+  firstName: "",
+  lastName: "",
+  dateOfBirth: null,
+  startDate: null,
+  street: "",
+  city:"",
+  zipCode:"",
+  region:"",
+  division:"",
+  });
+}, []);
+
+const registerEmployee = useCallback(
+  (e) => {
+    e.preventDefault();
+
+    if (Object.values(formData).some((value) => !value )) {
     toast.error("Please fill all fields");
     return;
   }
 
   const newEmployee = {
-    firstName,
-    lastName,
-    dateOfBirth: dateOfBirth.toISOString(),
-    startDate: startDate.toISOString(),
+    ...formData,
+    dateOfBirth: formData.dateOfBirth.toISOString(),
+    startDate: formData.startDate.toISOString(),
     address: {
-      street,
-      city,
-      state: region,
-      zipCode,
+      street: formData.street,
+      city: formData.city,
+      state: formData.region,
+      zipCode: formData.zipCode,
     },
-    department: division,
+    department: formData.division,
   };
 
   dispatch(registerEmployeeAction(newEmployee));
 
   toast.success("Employee Created Successfully!");
   resetForm();
-};
-
+},
+[dispatch, formData, resetForm]
+);
 
   return (
     <div>
@@ -94,29 +98,29 @@ const registerEmployee = (e) => {
             <legend>PERSONAL INFORMATION</legend>
         <label>First Name:</label>
         <input
-          type="text"
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleChange}
         />
 
         <label>Last Name:</label>
         <input
-          type="text"
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleChange}
         />
 
         <label>Date of Birth:</label>
         <CalendarSelector
-          selectedDay={dateOfBirth}
-          onSelectDay={setDateOfBirth}
+          selectedDay={formData.dateOfBirth}
+          onSelectDay={(date) => handleDateChange("dateOfBirth",date )}
           todayButton={<FontAwesomeIcon icon={faHome} />}
         />
 
         <label>Start Date:</label>
         <CalendarSelector
-          selectedDay={startDate}
-          onSelectDay={setStartDate}
+          selectedDay={formData.startDate}
+          onSelectDay={(date) => handleDateChange("startDate", date)}
           todayButton={<FontAwesomeIcon icon={faHome} />}
         />
         </fieldset>
@@ -129,16 +133,16 @@ const registerEmployee = (e) => {
           <legend>ADRESS</legend>
           <label>Street:</label>
           <input
-            type="text"
-            value={street}
-            onChange={(e) => setStreet(e.target.value)}
+            name="street"
+            value={formData.street}
+            onChange={handleChange}
           />
 
           <label>City:</label>
           <input
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
           />
 
           <label>State:</label>
@@ -147,23 +151,28 @@ const registerEmployee = (e) => {
                 value: s.abbreviation,
                 label: s.name,
               }))}
-              selectedValue={region}
-              onChange={setRegion}
+              selectedValue={formData.region}
+              onChange={(value) =>
+                setFormData((prev) => ({ ...prev, region:value}))
+              }
+
             />
         
           <label>Zip Code:</label>
           <input
-            type="text"
-            value={zipCode}
-            onChange={(e) => setZipCode(e.target.value)}
+            name="zipCode"
+            value={formData.zipCode}
+            onChange={handleChange}
           />
         </fieldset>
 
         <label>Department:</label>
         <OptionSelector
           optionsList={divisionOptions}
-          selectedValue={division}
-          onChange={(value) => setDivision(value)}
+          selectedValue={formData.division}
+          onChange={(value) => 
+            setFormData((prev) => ({ ...prev, division:value}))
+          }
           />
           </div>
           </div>

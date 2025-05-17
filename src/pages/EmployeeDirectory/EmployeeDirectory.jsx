@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useReactTable, getCoreRowModel, getFilteredRowModel } from '@tanstack/react-table';
@@ -34,25 +34,28 @@ export default function EmployeeDirectory() {
         onGlobalFilterChange: setFilterText,
       });
       
-      const filteredData = table.getFilteredRowModel().rows.map(row => row.original)
+      const filteredData = useMemo(
+        () => table.getFilteredRowModel().rows.map(row => row.original),
+        [table]
+      );
 
-      const paginatedData = filteredData.slice(
+      const paginatedData = useMemo(() => {
+        return filteredData.slice(
         currentPage * rowsPerPage,
         currentPage * rowsPerPage + rowsPerPage
       )
+    }, [filteredData, currentPage, rowsPerPage]);
 
 
       const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-      const canGoBack = currentPage > 0;
-      const canGoForward = currentPage < totalPages - 1;
 
-      const handlePreviousPage = () => {
-        if (canGoBack) setCurrentPage(currentPage - 1);
-    };
+      const handlePreviousPage = useCallback(() => {
+        setCurrentPage(prev => (prev > 0 ? prev -1 : prev ));
+    }, []);
 
-    const handleNextPage = () => {
-        if (canGoForward) setCurrentPage(currentPage + 1);
-    };
+    const handleNextPage = useCallback (() => {
+        setCurrentPage(prev => (prev < totalPages - 1 ? prev +1 : prev));
+    }, [totalPages]);
     
     return (
        <div>
@@ -97,9 +100,9 @@ export default function EmployeeDirectory() {
             <EmployeeTable table={{ ...table, rows: paginatedData.map(row => ({ original: row })) }} />
             
             <div className="pagination">
-                <button onClick={handlePreviousPage} disabled={!canGoBack}>Previous</button>
+                <button onClick={handlePreviousPage} disabled={currentPage === 0 }>Previous</button>
                 <span> Page {currentPage + 1} of {totalPages} </span>
-                <button onClick={handleNextPage} disabled={!canGoForward}>Next</button>
+                <button onClick={handleNextPage} disabled={currentPage >= totalPages -1 }>Next</button>
             </div>
             
             <Link to="/" className='go-back-button'>
