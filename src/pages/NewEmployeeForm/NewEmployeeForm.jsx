@@ -5,13 +5,16 @@ import { registerEmployeeAction } from "../../interactions/staffActions";
 import { regionList, divisionOptions} from "../../data/values"
 import "./NewEmployeeCustom.css"
 import Header from "../../components/Header/Header"
-
+import Toast from "../../components/Toast/Toast"
 
 const CalendarSelector = lazy (() => import("../../components/CalendarSelector/CalendarSelector"));
 const OptionSelector = lazy (() => import ("hrnet-option-selector"));
 
+
 export default function CreateEmployee() {
   const dispatch = useDispatch();
+
+const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
 const [employees, setEmployees] = useState(() => {
   const storedEmployees = localStorage.getItem("employees");
@@ -63,7 +66,7 @@ const registerEmployee = useCallback(
     e.preventDefault();
 
     if (Object.values(formData).some((value) => !value )) {
-    alert("Please fill all fields");
+      setToast({ show: true, message: "Please fill all fields",type:"error"});
     return;
   }
 
@@ -86,7 +89,7 @@ const updatedEmployees = [...employees, newEmployee];
 setEmployees(updatedEmployees);
 
   dispatch(registerEmployeeAction(newEmployee));
-  alert("Employee Created Successfully!");
+  setToast({ show: true, message: "Employee Created Successfully!", type:"success"});
   resetForm();
 },
 [dispatch, formData, resetForm, employees]
@@ -200,6 +203,13 @@ setEmployees(updatedEmployees);
         </div>
       </form>
     </div>
+    {toast.show && (
+      <Toast 
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast({ ...toast, show: false })}
+        />
+      )}
     </div>
   );
 }
