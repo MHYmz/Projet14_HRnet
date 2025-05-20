@@ -1,18 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, lazy, useCallback, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link} from "react-router-dom";
 import { registerEmployeeAction } from "../../interactions/staffActions";
-import CalendarSelector from "hrnet-calendar-selector";
-import OptionSelector from "hrnet-option-selector"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faHome} from "@fortawesome/free-solid-svg-icons";
 import { regionList, divisionOptions} from "../../data/values"
 import "./NewEmployeeCustom.css"
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"
 import Header from "../../components/Header/Header"
 
 
+const CalendarSelector = lazy (() => import("../../components/CalendarSelector/CalendarSelector"));
+const OptionSelector = lazy (() => import ("hrnet-option-selector"));
 
 export default function CreateEmployee() {
   const dispatch = useDispatch();
@@ -67,7 +63,7 @@ const registerEmployee = useCallback(
     e.preventDefault();
 
     if (Object.values(formData).some((value) => !value )) {
-    toast.error("Please fill all fields");
+    alert("Please fill all fields");
     return;
   }
 
@@ -90,7 +86,7 @@ const updatedEmployees = [...employees, newEmployee];
 setEmployees(updatedEmployees);
 
   dispatch(registerEmployeeAction(newEmployee));
-  toast.success("Employee Created Successfully!");
+  alert("Employee Created Successfully!");
   resetForm();
 },
 [dispatch, formData, resetForm, employees]
@@ -125,18 +121,22 @@ setEmployees(updatedEmployees);
         />
 
         <label>Date of Birth:</label>
+        <Suspense fallback={<div>Loading calendar...</div>}>
         <CalendarSelector
           selectedDay={formData.dateOfBirth}
           onSelectDay={(date) => handleDateChange("dateOfBirth",date )}
-          todayButton={<FontAwesomeIcon icon={faHome} />}
+          todayButton='Today'
         />
+        </Suspense>
 
         <label>Start Date:</label>
+        <Suspense fallback={<div>Loading calendar...</div>}>
         <CalendarSelector
           selectedDay={formData.startDate}
           onSelectDay={(date) => handleDateChange("startDate", date)}
-          todayButton={<FontAwesomeIcon icon={faHome} />}
+          todayButton='Today'
         />
+        </Suspense>
         </fieldset>
         </div>
 
@@ -144,7 +144,7 @@ setEmployees(updatedEmployees);
         <div className="form-section">
 
         <fieldset>
-          <legend>ADRESS</legend>
+          <legend>ADDRESS</legend>
           <label>Street:</label>
           <input
             name="street"
@@ -160,6 +160,7 @@ setEmployees(updatedEmployees);
           />
 
           <label>State:</label>
+          <Suspense fallback={<div>Loading selector...</div>}>
           <OptionSelector 
               optionsList={regionList.map((s) => ({
                 value: s.abbreviation,
@@ -169,8 +170,8 @@ setEmployees(updatedEmployees);
               onChange={(value) =>
                 setFormData((prev) => ({ ...prev, region:value}))
               }
-
             />
+            </Suspense>
         
           <label>Zip Code:</label>
           <input
@@ -181,6 +182,7 @@ setEmployees(updatedEmployees);
         </fieldset>
 
         <label>Department:</label>
+        <Suspense fallback={<div>Loading selector...</div>}>
         <OptionSelector
           optionsList={divisionOptions}
           selectedValue={formData.division}
@@ -188,6 +190,7 @@ setEmployees(updatedEmployees);
             setFormData((prev) => ({ ...prev, division:value}))
           }
           />
+          </Suspense>
           </div>
           </div>
 
@@ -197,7 +200,6 @@ setEmployees(updatedEmployees);
         </div>
       </form>
     </div>
-    <ToastContainer/>
     </div>
   );
 }

@@ -11,3 +11,24 @@
     background-color: #e6e6e6;
     color: #555;
 }
+
+.custom-staff-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .custom-staff-table th,
+  .custom-staff-table td {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+  }
+  
+  .sortable-column {
+    cursor: pointer;
+    user-select: none;
+  }
+  
+  .sorting-icon {
+    margin-left: 4px;
+  }
+  

@@ -5,7 +5,6 @@ import { useReactTable, getCoreRowModel, getFilteredRowModel } from '@tanstack/r
 import EmployeeTable from '../../components/EmployeeTable/EmployeeTable';
 import "./EmployeeDirectoryCustom.css"
 import Header from '../../components/Header/Header';
-import {FaEdit, FaTrashAlt} from "react-icons/fa";
 
 export default function EmployeeDirectory() {
     const staffMembers = useSelector((state) => state.staffData.staffList) || [];
@@ -94,14 +93,22 @@ export default function EmployeeDirectory() {
           header: 'Actions',
           cell: ({ row }) => (
             <div>
-              <FaEdit
-                style={{ cursor: "pointer", marginRight: "10px" }}
+              <span
+              role="button"
+              aria-label="Edit"
+              style={{ cursor: "pointer", marginRight: "10px", fontSize: "16px" }}
                 onClick={() => editEmployee(row.original.id)}
-              />
-              <FaTrashAlt 
-                style={{ cursor: "pointer" }}
+                >
+                  ✏️
+                </span>
+                <span
+                role="button"
+                aria-label="Delete"
+                style={{ cursor: "pointer", fontSize: "16px" }}
                 onClick={() => deleteEmployee(row.original.id)}
-              />
+                >
+                🗑️
+                </span>
             </div>
           )
         }

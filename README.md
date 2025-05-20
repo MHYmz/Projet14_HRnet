@@ -66,15 +66,11 @@ L'application peut être déployée en utilisant Vite pour une build optimisée 
 npm run build
 ```
 
-## 📦 Composants HRNET
+## 📦 Composant HRNET
 
 ### ✅ HRNET Option Selector
 
 👉 [Voir le composant sur npm](https://www.npmjs.com/package/hrnet-option-selector)
-
-### ✅ HRNET Calendar Selector
-
-👉 [Voir le composant sur npm](https://www.npmjs.com/package/hrnet-calendar-selector)
 
 ## 📄 Licence
 
