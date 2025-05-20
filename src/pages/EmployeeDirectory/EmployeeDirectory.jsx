@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useReactTable, getCoreRowModel, getFilteredRowModel } from '@tanstack/react-table';
+import { useReactTable,
+   getCoreRowModel, 
+   getFilteredRowModel,
+   getPaginationRowModel 
+  } from '@tanstack/react-table';
 import EmployeeTable from '../../components/EmployeeTable/EmployeeTable';
 import "./EmployeeDirectoryCustom.css"
 import Header from '../../components/Header/Header';
@@ -120,34 +124,26 @@ export default function EmployeeDirectory() {
       const table = useReactTable({
         data: employees,
         columns,
-        state: {globalFilter: filterText }, 
+        state: {
+          globalFilter: filterText,
+          pagination: { pageIndex: currentPage, pageSize: rowsPerPage }
+        },
+        onGlobalFilterChange: setFilterText,
+        onPaginationChange: ({ pageIndex, pageSize }) => {
+        setCurrentPage(pageIndex);
+        setRowsPerPage(pageSize);
+         },
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
-        onGlobalFilterChange: setFilterText,
+        getPaginationRowModel: getPaginationRowModel(),
       });
       
-      const filteredData = useMemo(
-        () => table.getFilteredRowModel().rows.map(row => row.original),
-        [table]
-      );
 
-      const paginatedData = useMemo(() => {
-        return filteredData.slice(
-        currentPage * rowsPerPage,
-        currentPage * rowsPerPage + rowsPerPage
-      )
-    }, [filteredData, currentPage, rowsPerPage]);
+      const totalPages = table.getPageCount();
 
+      const handlePreviousPage = () => table.previousPage();
 
-      const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-
-      const handlePreviousPage = useCallback(() => {
-        setCurrentPage((prev) => Math.max(0, prev -1));
-    }, []);
-
-    const handleNextPage = useCallback (() => {
-        setCurrentPage(prev => Math.min (totalPages - 1 ? prev +1 : prev));
-    }, [totalPages]);
+    const handleNextPage = () => table.nextPage();
     
     return (
        <div>
@@ -186,7 +182,7 @@ export default function EmployeeDirectory() {
             </div>
 
             <div style={{ marginBottom: '10px' }}>
-                <strong>Total Results: {filteredData.length}</strong>
+                <strong>Total Results: {table.getFilteredRowModel().rows.length}</strong>
             </div>
 
             {selectedEmployee && (
@@ -211,17 +207,15 @@ export default function EmployeeDirectory() {
             </div>
             )}
 
-            <EmployeeTable table={{ ...table, rows: paginatedData.map(row => ({ original: row })) }} />
+            <EmployeeTable table={table}/>
 
             <div className="pagination">
-                <button onClick={handlePreviousPage} disabled={currentPage === 0 }>Previous</button>
-                <span> Page {currentPage + 1} of {totalPages} </span>
-                <button onClick={handleNextPage} disabled={currentPage >= totalPages -1 }>Next</button>
+            <button onClick={handlePreviousPage} disabled={!table.getCanPreviousPage()}>Previous </button>
+            <span> Page {table.getState().pagination.pageIndex + 1} of {totalPages} </span>
+            <button onClick={handleNextPage} disabled={!table.getCanNextPage()}>Next</button>
             </div>
             
-            <Link to="/" className='go-back-button'>
-            Go Back
-            </Link>
+            <Link to="/" className='go-back-button'> Go Back </Link>
         </div>
     );
 }
