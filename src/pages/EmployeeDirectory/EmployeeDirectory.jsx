@@ -14,35 +14,30 @@ export default function EmployeeDirectory() {
     const staffMembers = useSelector((state) => state.staffData.staffList) || [];
 
     const [employees, setEmployees] = useState(() => {
-      try {
-      const storedEmployees = localStorage.getItem("employees");
-      return storedEmployees ? JSON.parse(storedEmployees) : staffMembers;
-      } catch (error) {
-        console.error("Failled to parse localStorage employees", error); 
-        return staffMembers;
-      }
+      const stored = localStorage.getItem("employees");
+      return stored ? JSON.parse(stored) : staffMembers;
+
     });
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [filterText, setFilterText] = useState('');
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [currentPage, setCurrentPage] = useState(0);
 
     useEffect(() => {
       localStorage.setItem("employees", JSON.stringify(employees));
     }, [employees]);
 
     const deleteEmployee = useCallback((id) => {
-      setEmployees((prevEmployees) => {
-        const updatedEmployees = prevEmployees.filter((emp) => emp.id !== id);
-        localStorage.setItem("employees", JSON.stringify(updatedEmployees));
-        return updatedEmployees;
-      });
+      setEmployees(prev => prev.filter(emp => emp.id !== id));
     }, []);
 
     const editEmployee = useCallback((id) => {
       const employee = employees.find((emp) => emp.id === id);
       setSelectedEmployee(employee);
     }, [employees]);
+
+    const [pagination, setPagination] = useState({
+      pageIndex: 0,
+      pageSize: 10
+    });
 
     const saveEditEmployee = useCallback(() => {
       if (!selectedEmployee.firstName || !selectedEmployee.lastName) {
@@ -126,13 +121,10 @@ export default function EmployeeDirectory() {
         columns,
         state: {
           globalFilter: filterText,
-          pagination: { pageIndex: currentPage, pageSize: rowsPerPage }
+          pagination,
         },
         onGlobalFilterChange: setFilterText,
-        onPaginationChange: ({ pageIndex, pageSize }) => {
-        setCurrentPage(pageIndex);
-        setRowsPerPage(pageSize);
-         },
+        onPaginationChange: setPagination,
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
@@ -140,10 +132,6 @@ export default function EmployeeDirectory() {
       
 
       const totalPages = table.getPageCount();
-
-      const handlePreviousPage = () => table.previousPage();
-
-    const handleNextPage = () => table.nextPage();
     
     return (
        <div>
@@ -154,10 +142,12 @@ export default function EmployeeDirectory() {
                     <label>
                         Display 
                         <select
-                            value={rowsPerPage}
+                            value={pagination.pageSize}
                             onChange={(e) => {
-                              setRowsPerPage(Number(e.target.value));
-                              setCurrentPage(0);
+                              setPagination({
+                                pageIndex: 0,
+                                pageSize: Number(e.target.value)
+                            });
                             }}
                         >
                             {[5, 10, 20, 50].map((size) => (
@@ -166,23 +156,30 @@ export default function EmployeeDirectory() {
                         </select> 
                         rows per page
                     </label>
-                </div>
-                <div className="search-box">
+                    </div>
+           
+                
+                <label className="search-box">
                     <label htmlFor="search">Search:</label>
                     <input
-                        id="search"
                         value={filterText}
                         onChange={(e) => {
-                        setFilterText(e.target.value);
-                        setCurrentPage(0);
+                            setFilterText(e.target.value);
+                            setPagination({
+                              pageIndex: 0,
+                              pageSize: pagination.pageSize
+                            });
                           }}
+                          
                         placeholder="Search employees..."
                     />
-                </div>
+                </label>
             </div>
 
-            <div style={{ marginBottom: '10px' }}>
-                <strong>Total Results: {table.getFilteredRowModel().rows.length}</strong>
+            <div style={{ margin: '10px 0' }}>
+                <strong>
+                  Total Results: {table.getFilteredRowModel().rows.length}
+                  </strong>
             </div>
 
             {selectedEmployee && (
@@ -210,9 +207,22 @@ export default function EmployeeDirectory() {
             <EmployeeTable table={table}/>
 
             <div className="pagination">
-            <button onClick={handlePreviousPage} disabled={!table.getCanPreviousPage()}>Previous </button>
-            <span> Page {table.getState().pagination.pageIndex + 1} of {totalPages} </span>
-            <button onClick={handleNextPage} disabled={!table.getCanNextPage()}>Next</button>
+            <button 
+            onClick={() => table.previousPage()} 
+            disabled={!table.getCanPreviousPage()}
+            >
+            Previous 
+            </button>
+            
+            <span> 
+              Page {table.getState().pagination.pageIndex + 1} of {totalPages} 
+            </span>
+            
+            <button 
+            onClick={() => table.nextPage()} 
+            disabled={!table.getCanNextPage()}>
+              Next
+              </button>
             </div>
             
             <Link to="/" className='go-back-button'> Go Back </Link>
