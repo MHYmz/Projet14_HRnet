@@ -7,7 +7,7 @@ HRnet est une application de gestion des employés développée avec React. Cett
 ## 🚀 Fonctionnalités
 
 * Création d'employés avec des informations détaillées (nom, date de naissance, date d'embauche, adresse, département).
-* Visualisation de tous les employés enregistrés avec possibilité de recherche et de tri.
+* Visualisation, recherche, tri et pagination des employés enregistrés
 * Sélection de date via un composant calendrier personnalisé.
 * Menu déroulant pour sélectionner les départements et les régions.
 
@@ -21,27 +21,16 @@ HRnet est une application de gestion des employés développée avec React. Cett
 
 ### Installation du projet
 
-```bash
-https://github.com/MHYmz/Projet14_HRnet.git
-```
-
-Accédez au dossier du projet :
-
-```bash
+✅ Prérequis
+Node.js ≥ 18
+npm ≥ 9
+Éditeur recommandé : Visual Studio Code
+⚙️ Étapes
+git clone https://github.com/MHYmz/Projet14_HRnet.git
 cd Projet14_HRnet
-```
-
-Installez les dépendances :
-
-```bash
 npm install
-```
-
-Lancez l'application en mode développement :
-
-```bash
 npm run dev
-```
+
 
 ## ✅ Utilisation
 
@@ -71,6 +60,31 @@ npm run build
 ### ✅ HRNET Option Selector
 
 👉 [Voir le composant sur npm](https://www.npmjs.com/package/hrnet-option-selector)
+
+## Comparatifs Lighthouse
+🚀 jQuery vs React – Create Employee
+La version React offre des gains nets de performance :
+
+✅ Score global : 0.98 → 1.00 (max)
+⏱ FCP : 0.9s → 0.5s (44% plus rapide)
+📸 LCP : 0.9s → 0.6s (33% plus rapide)
+🕹 TTI : 0.9s → 0.6s (33% plus rapide)
+🚀 Speed Index : stable à 0.9s
+👉 Résultat : React améliore clairement la rapidité et la fluidité de l'application.
+
+
+
+🚀 jQuery vs React – Employee Directory
+La version React confirme sa modernisation efficace :
+
+✅ Score global : 0.98 → 1.00
+⏱ FCP : 0.5s → 0.5s (équivalent)
+📸 LCP : 0.5s → 0.5s
+🕹 TTI : 0.9s → 0.6s (33% plus rapide)
+🚀 Speed Index : 0.5s → 0.7s (légère baisse)
+📱 Viewport : absent → corrigé ✅ (responsive activé)
+👉 Résultat : React maintient de très bonnes performances tout en rendant l'application responsive et mieux structurée.
+
 
 ## 📄 Licence
 
