@@ -1,4 +1,4 @@
-import { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { Suspense, lazy, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link} from "react-router-dom";
 import { registerEmployeeAction } from "../../interactions/staffActions";
@@ -13,13 +13,8 @@ const OptionSelector = lazy (() => import ("hrnet-option-selector"));
 
 export default function CreateEmployee() {
   const dispatch = useDispatch();
+  const [toast, setToast] = useState({ show: false, message: "", type: "success" });
 
-const [toast, setToast] = useState({ show: false, message: "", type: "success" });
-
-const [employees, setEmployees] = useState(() => {
-  const storedEmployees = localStorage.getItem("employees");
-  return storedEmployees ? JSON.parse(storedEmployees) : [];
-});
 
 
   const [formData, setFormData] = useState({
@@ -34,9 +29,6 @@ const [employees, setEmployees] = useState(() => {
   division:"",
 });
 
-useEffect(() => {
-  localStorage.setItem("employees", JSON.stringify(employees));
-}, [employees]);
 
 const handleChange = useCallback ((e) => {
   const { name, value } = e.target;
@@ -64,7 +56,6 @@ const resetForm = useCallback (() => {
 const registerEmployee = useCallback(
   (e) => {
     e.preventDefault();
-
     if (Object.values(formData).some((value) => !value )) {
       setToast({ show: true, message: "Please fill all fields",type:"error"});
     return;
@@ -84,15 +75,11 @@ const registerEmployee = useCallback(
     department: formData.division,
   };
 
-
-const updatedEmployees = [...employees, newEmployee];
-setEmployees(updatedEmployees);
-
   dispatch(registerEmployeeAction(newEmployee));
   setToast({ show: true, message: "Employee Created Successfully!", type:"success"});
   resetForm();
 },
-[dispatch, formData, resetForm, employees]
+[dispatch, formData, resetForm]
 );
 
   return (

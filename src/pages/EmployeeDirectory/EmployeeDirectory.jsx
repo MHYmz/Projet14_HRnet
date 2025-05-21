@@ -1,7 +1,9 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useCallback, useMemo, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { useReactTable,
+import { deleteEmployeeAction, updateEmployeeAction } from '../../interactions/staffActions';
+import { 
+   useReactTable,
    getCoreRowModel, 
    getFilteredRowModel,
    getPaginationRowModel 
@@ -11,52 +13,34 @@ import "./EmployeeDirectoryCustom.css"
 import Header from '../../components/Header/Header';
 
 export default function EmployeeDirectory() {
-    const staffMembers = useSelector((state) => state.staffData.staffList) || [];
-
-    const [employees, setEmployees] = useState(() => {
-      const stored = localStorage.getItem("employees");
-      return stored ? JSON.parse(stored) : staffMembers;
-
-    });
+    const dispatch = useDispatch();
+    const employees = useSelector((state) => state.staffData.staffList);
     const [selectedEmployee, setSelectedEmployee] = useState(null);
     const [filterText, setFilterText] = useState('');
-
-    useEffect(() => {
-      localStorage.setItem("employees", JSON.stringify(employees));
-    }, [employees]);
+    const [pagination, setPagination] = useState({
+      pageIndex: 0,
+      pageSize: 10,
+    });
 
     const deleteEmployee = useCallback((id) => {
-      setEmployees(prev => prev.filter(emp => emp.id !== id));
-    }, []);
+      dispatch(deleteEmployeeAction(id));
+    }, [dispatch]);
 
     const editEmployee = useCallback((id) => {
       const employee = employees.find((emp) => emp.id === id);
       setSelectedEmployee(employee);
     }, [employees]);
 
-    const [pagination, setPagination] = useState({
-      pageIndex: 0,
-      pageSize: 10
-    });
-
     const saveEditEmployee = useCallback(() => {
       if (!selectedEmployee.firstName || !selectedEmployee.lastName) {
         alert("First Name and Last Name are required.");
         return;
       }
-      
-      setEmployees((prevEmployees) => {
-        const updatedEmployees = prevEmployees.map((emp) =>
-          emp.id === selectedEmployee.id ? selectedEmployee : emp
-        );
-        localStorage.setItem("employees", JSON.stringify(updatedEmployees));
-        return updatedEmployees;
-      });
+      dispatch(updateEmployeeAction(selectedEmployee));
       setSelectedEmployee(null);
-    }, [selectedEmployee]);
-    
-    
-    const handleEditChange = (e) => {
+    }, [dispatch, selectedEmployee]);
+      
+      const handleEditChange = (e) => {
       const { name, value } = e.target;
       setSelectedEmployee((prev) => {
         if (["street", "city", "state", "zipCode"].includes(name)) {
@@ -74,8 +58,6 @@ export default function EmployeeDirectory() {
         };
       });
     };
-    
-    
     
     const columns = useMemo(() => [
         { id: 'firstName', accessorKey: 'firstName', header: 'First Name' },
@@ -111,12 +93,9 @@ export default function EmployeeDirectory() {
             </div>
           )
         }
-        
       ], [editEmployee, deleteEmployee]);
 
-    
-    
-      const table = useReactTable({
+        const table = useReactTable({
         data: employees,
         columns,
         state: {
@@ -130,8 +109,7 @@ export default function EmployeeDirectory() {
         getPaginationRowModel: getPaginationRowModel(),
       });
       
-
-      const totalPages = table.getPageCount();
+    const totalPages = table.getPageCount();
     
     return (
        <div>

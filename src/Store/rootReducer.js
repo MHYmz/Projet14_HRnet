@@ -1,6 +1,8 @@
 import { combineReducers } from "redux";
 import staffRegistryReducer from "./staffReducer";
 
-export default combineReducers({
+const rootReducer = combineReducers({
   staffData: staffRegistryReducer,
 });
+
+export default rootReducer;
