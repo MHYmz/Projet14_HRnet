@@ -13,24 +13,20 @@ HRnet est une application de gestion des employés développée avec React. Cett
 
 ## 📦 Installation
 
-### Prérequis
+## Prérequis
 
 * Node.js (version 18 ou supérieure)
 * NPM (version 9 ou supérieure)
 * Un éditeur de texte comme Visual Studio Code (VS Code)
 
-### Installation du projet
+## ⚙️ Étapes d'installation
 
-✅ Prérequis
-Node.js ≥ 18
-npm ≥ 9
-Éditeur recommandé : Visual Studio Code
-⚙️ Étapes
+```bash
 git clone https://github.com/MHYmz/Projet14_HRnet.git
 cd Projet14_HRnet
 npm install
 npm run dev
-
+``` 
 
 ## ✅ Utilisation
 
@@ -62,6 +58,7 @@ npm run build
 👉 [Voir le composant sur npm](https://www.npmjs.com/package/hrnet-option-selector)
 
 ## Comparatifs Lighthouse
+
 🚀 jQuery vs React – Create Employee
 La version React offre des gains nets de performance :
 
@@ -73,17 +70,16 @@ La version React offre des gains nets de performance :
 👉 Résultat : React améliore clairement la rapidité et la fluidité de l'application.
 
 
-
 🚀 jQuery vs React – Employee Directory
 La version React confirme sa modernisation efficace :
 
 ✅ Score global : 0.98 → 1.00
-⏱ FCP : 0.5s → 0.5s (équivalent)
-📸 LCP : 0.5s → 0.5s
-🕹 TTI : 0.9s → 0.6s (33% plus rapide)
-🚀 Speed Index : 0.5s → 0.7s (légère baisse)
+⏱ FCP : 0.6s → 0.5s (17% plus rapide)
+📸 LCP : 0.6s → 0.5s (17% plus rapide)
+🕹 TTI : 0.8s → 0.6s (25% plus rapide)
+🚀 Speed Index : 0.6s → 0.7s (légère baisse)
 📱 Viewport : absent → corrigé ✅ (responsive activé)
-👉 Résultat : React maintient de très bonnes performances tout en rendant l'application responsive et mieux structurée.
+👉 Résultat : React améliore la réactivité, réduit les temps de chargement principaux et corrige les problèmes de responsive design. Malgré une légère hausse du Speed Index, l’application gagne en fluidité et en structure, tout en maintenant d’excellentes performances globales.
 
 
 ## 📄 Licence
