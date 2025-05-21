@@ -5,7 +5,7 @@ import { registerEmployeeAction } from "../../interactions/staffActions";
 import { regionList, divisionOptions} from "../../data/values"
 import "./NewEmployeeCustom.css"
 import Header from "../../components/Header/Header"
-import Toast from "../../components/Toast/Toast"
+import Modal from "../../components/Modal/Modal"
 
 const CalendarSelector = lazy (() => import("../../components/CalendarSelector/CalendarSelector"));
 const OptionSelector = lazy (() => import ("hrnet-option-selector"));
@@ -204,11 +204,14 @@ setEmployees(updatedEmployees);
       </form>
     </div>
     {toast.show && (
-      <Toast 
-        message={toast.message}
-        type={toast.type}
+      <Modal
+        isOpen={toast.show}
         onClose={() => setToast({ ...toast, show: false })}
-        />
+        >
+        <div className={`modal-message ${toast.type}`}>
+            {toast.message}
+        </div>
+        </Modal>
       )}
     </div>
   );

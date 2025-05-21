@@ -190,3 +190,13 @@ button:hover {
 .save-button:hover {
   background-color: #07be97;
 }
+
+.modal-message.success {
+  color: green;
+  font-weight: bold;
+}
+
+.modal-message.error {
+  color: red;
+  font-weight: bold;
+}
